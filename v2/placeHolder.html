@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Consumo de API "jsonplaceholder"</title>
+</head>
+
+<body>
+    <div>
+        <input type="text" id="myInput" onkeyup="filtrar()" placeholder="Filtrar por nombre">
+        <table id="myTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>username</th>
+                    <th>email</th>
+                    <th>Dirección</th>
+                </tr>
+            </thead>
+            <tbody id="data">
+            </tbody>
+        </table>
+    </div>
+    
+
+    <script>
+        let url = 'https://jsonplaceholder.typicode.com/users/';    //Fetch toma un argumento 
+        fetch(url)                                                  //(la ruta del recurso que quieres obtener)
+            .then(response => response.json())                      //y devuelve un objeto Promise conteniendo 
+            .then(data => mostrarData(data))                        //la respuesta, un objeto Response.
+                                                                    //El objeto Response es enviado a la funcion mostrarData
+                                                                    //a traves del arreglo "data"
+        
+        const mostrarData = (data) => {                             //La funcion mostrarData toma como parametro
+            console.log(data);                                      //el arreglo "data"
+            let body = "";
+            console.log(data[1].id);
+            console.log(data.length);
+
+            for(let i = 0; i < data.length; i++) {                  //El ciclo for recorre el arreglo obteniendo
+                                                                    //todos los elementos y concatenandolos en la cadena "body"
+                body += `                                           
+                    <tr>
+                        <td>${data[i].id}</td>
+                        <td>${data[i].name}</td>
+                        <td>${data[i].username}</td>
+                        <td>${data[i].email}</td>
+                        <td>${data[i].address.street}</td>
+                    </tr>`;
+            }
+            document.getElementById('data').innerHTML = body;       //La cadena "body" es escrita en el id="data" del html 
+        }
+    </script>
+
+
+
+    <script>
+        function filtrar() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+
+
+
+
+</body>
+
+</html>
